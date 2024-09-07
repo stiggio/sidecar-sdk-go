@@ -18,24 +18,18 @@ import (
 var certFile embed.FS
 
 type ApiClientConfig struct {
-	apiKey     string
-	httpClient *http.Client
-	baseUrl    *string
+	ApiKey     string
+	HttpClient *http.Client
+	BaseUrl    *string
 }
 
-type SidecarClient interface {
-	sidecarv1.SidecarServiceClient
-	Api() stigg.StiggClient
-	Close() error
-}
-
-type sidecarClient struct {
+type SidecarClient struct {
 	sidecarv1.SidecarServiceClient
 	conn *grpc.ClientConn
-	api  stigg.StiggClient
+	Api  stigg.StiggClient
 }
 
-func NewSidecarClient(apiConfig ApiClientConfig, remoteSidecarHost *string, remoteSidecarPort *int) (SidecarClient, error) {
+func NewSidecarClient(apiConfig ApiClientConfig, remoteSidecarHost *string, remoteSidecarPort *int) (*SidecarClient, error) {
 	serverAddress := getServerAddress(remoteSidecarHost, remoteSidecarPort)
 
 	rootPem, err := fs.ReadFile(certFile, "certs/root-ca.pem")
@@ -61,9 +55,9 @@ func NewSidecarClient(apiConfig ApiClientConfig, remoteSidecarHost *string, remo
 
 	client := sidecarv1.NewSidecarServiceClient(conn)
 
-	api := stigg.NewStiggClient(apiConfig.apiKey, apiConfig.httpClient, apiConfig.baseUrl)
+	api := stigg.NewStiggClient(apiConfig.ApiKey, apiConfig.HttpClient, apiConfig.BaseUrl)
 
-	sidecarClient := &sidecarClient{
+	sidecarClient := &SidecarClient{
 		client,
 		conn,
 		api,
@@ -72,11 +66,7 @@ func NewSidecarClient(apiConfig ApiClientConfig, remoteSidecarHost *string, remo
 	return sidecarClient, nil
 }
 
-func (c *sidecarClient) Api() stigg.StiggClient {
-	return c.api
-}
-
-func (c *sidecarClient) Close() error {
+func (c *SidecarClient) Close() error {
 	return c.conn.Close()
 }
 
