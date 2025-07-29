@@ -24,6 +24,7 @@ const (
 	SidecarService_GetBooleanEntitlement_FullMethodName = "/stigg.sidecar.v1.SidecarService/GetBooleanEntitlement"
 	SidecarService_GetNumericEntitlement_FullMethodName = "/stigg.sidecar.v1.SidecarService/GetNumericEntitlement"
 	SidecarService_GetMeteredEntitlement_FullMethodName = "/stigg.sidecar.v1.SidecarService/GetMeteredEntitlement"
+	SidecarService_GetEnumEntitlement_FullMethodName    = "/stigg.sidecar.v1.SidecarService/GetEnumEntitlement"
 	SidecarService_ReportUsage_FullMethodName           = "/stigg.sidecar.v1.SidecarService/ReportUsage"
 	SidecarService_ReportEvents_FullMethodName          = "/stigg.sidecar.v1.SidecarService/ReportEvents"
 	SidecarService_ReloadEntitlements_FullMethodName    = "/stigg.sidecar.v1.SidecarService/ReloadEntitlements"
@@ -37,6 +38,7 @@ type SidecarServiceClient interface {
 	GetBooleanEntitlement(ctx context.Context, in *GetBooleanEntitlementRequest, opts ...grpc.CallOption) (*GetBooleanEntitlementResponse, error)
 	GetNumericEntitlement(ctx context.Context, in *GetNumericEntitlementRequest, opts ...grpc.CallOption) (*GetNumericEntitlementResponse, error)
 	GetMeteredEntitlement(ctx context.Context, in *GetMeteredEntitlementRequest, opts ...grpc.CallOption) (*GetMeteredEntitlementResponse, error)
+	GetEnumEntitlement(ctx context.Context, in *GetEnumEntitlementRequest, opts ...grpc.CallOption) (*GetEnumEntitlementResponse, error)
 	ReportUsage(ctx context.Context, in *ReportUsageRequest, opts ...grpc.CallOption) (*ReportUsageResponse, error)
 	ReportEvents(ctx context.Context, in *ReportEventsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ReloadEntitlements(ctx context.Context, in *ReloadEntitlementsRequest, opts ...grpc.CallOption) (*ReloadEntitlementsResponse, error)
@@ -90,6 +92,16 @@ func (c *sidecarServiceClient) GetMeteredEntitlement(ctx context.Context, in *Ge
 	return out, nil
 }
 
+func (c *sidecarServiceClient) GetEnumEntitlement(ctx context.Context, in *GetEnumEntitlementRequest, opts ...grpc.CallOption) (*GetEnumEntitlementResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetEnumEntitlementResponse)
+	err := c.cc.Invoke(ctx, SidecarService_GetEnumEntitlement_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *sidecarServiceClient) ReportUsage(ctx context.Context, in *ReportUsageRequest, opts ...grpc.CallOption) (*ReportUsageResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ReportUsageResponse)
@@ -128,6 +140,7 @@ type SidecarServiceServer interface {
 	GetBooleanEntitlement(context.Context, *GetBooleanEntitlementRequest) (*GetBooleanEntitlementResponse, error)
 	GetNumericEntitlement(context.Context, *GetNumericEntitlementRequest) (*GetNumericEntitlementResponse, error)
 	GetMeteredEntitlement(context.Context, *GetMeteredEntitlementRequest) (*GetMeteredEntitlementResponse, error)
+	GetEnumEntitlement(context.Context, *GetEnumEntitlementRequest) (*GetEnumEntitlementResponse, error)
 	ReportUsage(context.Context, *ReportUsageRequest) (*ReportUsageResponse, error)
 	ReportEvents(context.Context, *ReportEventsRequest) (*emptypb.Empty, error)
 	ReloadEntitlements(context.Context, *ReloadEntitlementsRequest) (*ReloadEntitlementsResponse, error)
@@ -152,6 +165,9 @@ func (UnimplementedSidecarServiceServer) GetNumericEntitlement(context.Context, 
 }
 func (UnimplementedSidecarServiceServer) GetMeteredEntitlement(context.Context, *GetMeteredEntitlementRequest) (*GetMeteredEntitlementResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMeteredEntitlement not implemented")
+}
+func (UnimplementedSidecarServiceServer) GetEnumEntitlement(context.Context, *GetEnumEntitlementRequest) (*GetEnumEntitlementResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEnumEntitlement not implemented")
 }
 func (UnimplementedSidecarServiceServer) ReportUsage(context.Context, *ReportUsageRequest) (*ReportUsageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReportUsage not implemented")
@@ -255,6 +271,24 @@ func _SidecarService_GetMeteredEntitlement_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SidecarService_GetEnumEntitlement_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEnumEntitlementRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SidecarServiceServer).GetEnumEntitlement(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SidecarService_GetEnumEntitlement_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SidecarServiceServer).GetEnumEntitlement(ctx, req.(*GetEnumEntitlementRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _SidecarService_ReportUsage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ReportUsageRequest)
 	if err := dec(in); err != nil {
@@ -331,6 +365,10 @@ var SidecarService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetMeteredEntitlement",
 			Handler:    _SidecarService_GetMeteredEntitlement_Handler,
+		},
+		{
+			MethodName: "GetEnumEntitlement",
+			Handler:    _SidecarService_GetEnumEntitlement_Handler,
 		},
 		{
 			MethodName: "ReportUsage",

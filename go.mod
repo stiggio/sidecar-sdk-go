@@ -3,7 +3,7 @@ module github.com/stiggio/sidecar-sdk-go/v2
 go 1.18
 
 require (
-	github.com/stiggio/api-client-go/v2 v2.475.0
+	github.com/stiggio/api-client-go/v2 v2.482.0
 	google.golang.org/grpc v1.64.1
 	google.golang.org/protobuf v1.33.0
 )
