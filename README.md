@@ -9,7 +9,7 @@ See https://docs.stigg.io/docs/sidecar-sdk
 ## Installation
 
 ```shell
-    go get github.com/stiggio/sidecar-sdk-go/v2
+    go get github.com/stiggio/sidecar-sdk-go/v3
 ```
 
 ## Usage
@@ -21,12 +21,15 @@ Initialize the client:
 package xyz
 
 import (
-  "github.com/stiggio/sidecar-sdk-go/v2"
+  "github.com/stiggio/sidecar-sdk-go/v3"
 )
 
 host := "localhost"
-port := 8443
-client, err := NewSidecarClient(ApiClientConfig{apiKey: "<SERVER-API-KEY>"}, &host, &port)
+port := 80
+client, err := NewSidecarClient(ApiClientConfig{ApiKey: "<SERVER-API-KEY>"}, &host, &port, RemoteSidecarConfig{})
+
+// With legacy TLS enabled
+// client, err := NewSidecarClient(ApiClientConfig{ApiKey: "<SERVER-API-KEY>"}, &host, &port, RemoteSidecarConfig{UseLegacyTls: true})
 
 ```
 
@@ -39,13 +42,13 @@ package xyz
 import (
   "context"
   "fmt"
-  "github.com/stiggio/sidecar-sdk-go/v2"
-  sidecarv1 "github.com/stiggio/sidecar-sdk-go/v2/generated/stigg/sidecar/v1"
+  "github.com/stiggio/sidecar-sdk-go/v3"
+  sidecarv1 "github.com/stiggio/sidecar-sdk-go/v3/generated/stigg/sidecar/v1"
 )
 
 func main() {
   host := "localhost"
-  port := 8443
+  port := 80
   client, err := NewSidecarClient(ApiClientConfig{apiKey: "<SERVER-API-KEY>"}, &host, &port)
 
   req := sidecarv1.GetBooleanEntitlementRequest{
@@ -73,13 +76,13 @@ package xyz
 import (
   "context"
   "fmt"
-  "github.com/stiggio/sidecar-sdk-go/v2"
-  sidecarv1 "github.com/stiggio/sidecar-sdk-go/v2/generated/stigg/sidecar/v1"
+  "github.com/stiggio/sidecar-sdk-go/v3"
+  sidecarv1 "github.com/stiggio/sidecar-sdk-go/v3/generated/stigg/sidecar/v1"
 )
 
 func main() {
   host := "localhost"
-  port := 8443
+  port := 80
   client, err := NewSidecarClient(ApiClientConfig{apiKey: "<SERVER-API-KEY>"}, &host, &port)
   
   customerId := "test-customer-6923842"
@@ -116,4 +119,3 @@ func main() {
 ### License
 
 See the [LICENSE](LICENSE) file for details
-
