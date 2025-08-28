@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	SidecarService_GetEntitlements_FullMethodName       = "/stigg.sidecar.v1.SidecarService/GetEntitlements"
+	SidecarService_GetEntitlement_FullMethodName        = "/stigg.sidecar.v1.SidecarService/GetEntitlement"
 	SidecarService_GetBooleanEntitlement_FullMethodName = "/stigg.sidecar.v1.SidecarService/GetBooleanEntitlement"
 	SidecarService_GetNumericEntitlement_FullMethodName = "/stigg.sidecar.v1.SidecarService/GetNumericEntitlement"
 	SidecarService_GetMeteredEntitlement_FullMethodName = "/stigg.sidecar.v1.SidecarService/GetMeteredEntitlement"
@@ -35,6 +36,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SidecarServiceClient interface {
 	GetEntitlements(ctx context.Context, in *GetEntitlementsRequest, opts ...grpc.CallOption) (*GetEntitlementsResponse, error)
+	GetEntitlement(ctx context.Context, in *GetEntitlementRequest, opts ...grpc.CallOption) (*GetEntitlementResponse, error)
 	GetBooleanEntitlement(ctx context.Context, in *GetBooleanEntitlementRequest, opts ...grpc.CallOption) (*GetBooleanEntitlementResponse, error)
 	GetNumericEntitlement(ctx context.Context, in *GetNumericEntitlementRequest, opts ...grpc.CallOption) (*GetNumericEntitlementResponse, error)
 	GetMeteredEntitlement(ctx context.Context, in *GetMeteredEntitlementRequest, opts ...grpc.CallOption) (*GetMeteredEntitlementResponse, error)
@@ -56,6 +58,16 @@ func (c *sidecarServiceClient) GetEntitlements(ctx context.Context, in *GetEntit
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetEntitlementsResponse)
 	err := c.cc.Invoke(ctx, SidecarService_GetEntitlements_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sidecarServiceClient) GetEntitlement(ctx context.Context, in *GetEntitlementRequest, opts ...grpc.CallOption) (*GetEntitlementResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetEntitlementResponse)
+	err := c.cc.Invoke(ctx, SidecarService_GetEntitlement_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -137,6 +149,7 @@ func (c *sidecarServiceClient) ReloadEntitlements(ctx context.Context, in *Reloa
 // for forward compatibility.
 type SidecarServiceServer interface {
 	GetEntitlements(context.Context, *GetEntitlementsRequest) (*GetEntitlementsResponse, error)
+	GetEntitlement(context.Context, *GetEntitlementRequest) (*GetEntitlementResponse, error)
 	GetBooleanEntitlement(context.Context, *GetBooleanEntitlementRequest) (*GetBooleanEntitlementResponse, error)
 	GetNumericEntitlement(context.Context, *GetNumericEntitlementRequest) (*GetNumericEntitlementResponse, error)
 	GetMeteredEntitlement(context.Context, *GetMeteredEntitlementRequest) (*GetMeteredEntitlementResponse, error)
@@ -156,6 +169,9 @@ type UnimplementedSidecarServiceServer struct{}
 
 func (UnimplementedSidecarServiceServer) GetEntitlements(context.Context, *GetEntitlementsRequest) (*GetEntitlementsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetEntitlements not implemented")
+}
+func (UnimplementedSidecarServiceServer) GetEntitlement(context.Context, *GetEntitlementRequest) (*GetEntitlementResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEntitlement not implemented")
 }
 func (UnimplementedSidecarServiceServer) GetBooleanEntitlement(context.Context, *GetBooleanEntitlementRequest) (*GetBooleanEntitlementResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBooleanEntitlement not implemented")
@@ -213,6 +229,24 @@ func _SidecarService_GetEntitlements_Handler(srv interface{}, ctx context.Contex
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SidecarServiceServer).GetEntitlements(ctx, req.(*GetEntitlementsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SidecarService_GetEntitlement_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEntitlementRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SidecarServiceServer).GetEntitlement(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SidecarService_GetEntitlement_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SidecarServiceServer).GetEntitlement(ctx, req.(*GetEntitlementRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -353,6 +387,10 @@ var SidecarService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetEntitlements",
 			Handler:    _SidecarService_GetEntitlements_Handler,
+		},
+		{
+			MethodName: "GetEntitlement",
+			Handler:    _SidecarService_GetEntitlement_Handler,
 		},
 		{
 			MethodName: "GetBooleanEntitlement",
