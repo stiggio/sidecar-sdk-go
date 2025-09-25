@@ -6,7 +6,7 @@ import (
 	"embed"
 	"errors"
 	"fmt"
-	"github.com/stiggio/api-client-go/v2"
+	"github.com/stiggio/api-client-go/v3"
 	"github.com/stiggio/sidecar-sdk-go/v3/generated/stigg/sidecar/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
