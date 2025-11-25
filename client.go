@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/stiggio/api-client-go/v3"
-	"github.com/stiggio/sidecar-sdk-go/v4/generated/stigg/sidecar/v1"
+	"github.com/stiggio/sidecar-sdk-go/v5/generated/stigg/sidecar/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
