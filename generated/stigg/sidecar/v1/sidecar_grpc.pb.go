@@ -29,6 +29,7 @@ const (
 	SidecarService_ReportUsage_FullMethodName           = "/stigg.sidecar.v1.SidecarService/ReportUsage"
 	SidecarService_ReportEvents_FullMethodName          = "/stigg.sidecar.v1.SidecarService/ReportEvents"
 	SidecarService_ReloadEntitlements_FullMethodName    = "/stigg.sidecar.v1.SidecarService/ReloadEntitlements"
+	SidecarService_ReportUsageBulk_FullMethodName       = "/stigg.sidecar.v1.SidecarService/ReportUsageBulk"
 )
 
 // SidecarServiceClient is the client API for SidecarService service.
@@ -44,6 +45,7 @@ type SidecarServiceClient interface {
 	ReportUsage(ctx context.Context, in *ReportUsageRequest, opts ...grpc.CallOption) (*ReportUsageResponse, error)
 	ReportEvents(ctx context.Context, in *ReportEventsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ReloadEntitlements(ctx context.Context, in *ReloadEntitlementsRequest, opts ...grpc.CallOption) (*ReloadEntitlementsResponse, error)
+	ReportUsageBulk(ctx context.Context, in *ReportUsageBulkRequest, opts ...grpc.CallOption) (*ReportUsageBulkResponse, error)
 }
 
 type sidecarServiceClient struct {
@@ -144,6 +146,16 @@ func (c *sidecarServiceClient) ReloadEntitlements(ctx context.Context, in *Reloa
 	return out, nil
 }
 
+func (c *sidecarServiceClient) ReportUsageBulk(ctx context.Context, in *ReportUsageBulkRequest, opts ...grpc.CallOption) (*ReportUsageBulkResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReportUsageBulkResponse)
+	err := c.cc.Invoke(ctx, SidecarService_ReportUsageBulk_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SidecarServiceServer is the server API for SidecarService service.
 // All implementations must embed UnimplementedSidecarServiceServer
 // for forward compatibility.
@@ -157,6 +169,7 @@ type SidecarServiceServer interface {
 	ReportUsage(context.Context, *ReportUsageRequest) (*ReportUsageResponse, error)
 	ReportEvents(context.Context, *ReportEventsRequest) (*emptypb.Empty, error)
 	ReloadEntitlements(context.Context, *ReloadEntitlementsRequest) (*ReloadEntitlementsResponse, error)
+	ReportUsageBulk(context.Context, *ReportUsageBulkRequest) (*ReportUsageBulkResponse, error)
 	mustEmbedUnimplementedSidecarServiceServer()
 }
 
@@ -193,6 +206,9 @@ func (UnimplementedSidecarServiceServer) ReportEvents(context.Context, *ReportEv
 }
 func (UnimplementedSidecarServiceServer) ReloadEntitlements(context.Context, *ReloadEntitlementsRequest) (*ReloadEntitlementsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReloadEntitlements not implemented")
+}
+func (UnimplementedSidecarServiceServer) ReportUsageBulk(context.Context, *ReportUsageBulkRequest) (*ReportUsageBulkResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReportUsageBulk not implemented")
 }
 func (UnimplementedSidecarServiceServer) mustEmbedUnimplementedSidecarServiceServer() {}
 func (UnimplementedSidecarServiceServer) testEmbeddedByValue()                        {}
@@ -377,6 +393,24 @@ func _SidecarService_ReloadEntitlements_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SidecarService_ReportUsageBulk_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReportUsageBulkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SidecarServiceServer).ReportUsageBulk(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SidecarService_ReportUsageBulk_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SidecarServiceServer).ReportUsageBulk(ctx, req.(*ReportUsageBulkRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SidecarService_ServiceDesc is the grpc.ServiceDesc for SidecarService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -419,6 +453,10 @@ var SidecarService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ReloadEntitlements",
 			Handler:    _SidecarService_ReloadEntitlements_Handler,
+		},
+		{
+			MethodName: "ReportUsageBulk",
+			Handler:    _SidecarService_ReportUsageBulk_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
