@@ -20,16 +20,18 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SidecarService_GetEntitlements_FullMethodName       = "/stigg.sidecar.v1.SidecarService/GetEntitlements"
-	SidecarService_GetEntitlement_FullMethodName        = "/stigg.sidecar.v1.SidecarService/GetEntitlement"
-	SidecarService_GetBooleanEntitlement_FullMethodName = "/stigg.sidecar.v1.SidecarService/GetBooleanEntitlement"
-	SidecarService_GetNumericEntitlement_FullMethodName = "/stigg.sidecar.v1.SidecarService/GetNumericEntitlement"
-	SidecarService_GetMeteredEntitlement_FullMethodName = "/stigg.sidecar.v1.SidecarService/GetMeteredEntitlement"
-	SidecarService_GetEnumEntitlement_FullMethodName    = "/stigg.sidecar.v1.SidecarService/GetEnumEntitlement"
-	SidecarService_ReportUsage_FullMethodName           = "/stigg.sidecar.v1.SidecarService/ReportUsage"
-	SidecarService_ReportEvents_FullMethodName          = "/stigg.sidecar.v1.SidecarService/ReportEvents"
-	SidecarService_ReloadEntitlements_FullMethodName    = "/stigg.sidecar.v1.SidecarService/ReloadEntitlements"
-	SidecarService_ReportUsageBulk_FullMethodName       = "/stigg.sidecar.v1.SidecarService/ReportUsageBulk"
+	SidecarService_GetEntitlements_FullMethodName        = "/stigg.sidecar.v1.SidecarService/GetEntitlements"
+	SidecarService_GetEntitlement_FullMethodName         = "/stigg.sidecar.v1.SidecarService/GetEntitlement"
+	SidecarService_GetBooleanEntitlement_FullMethodName  = "/stigg.sidecar.v1.SidecarService/GetBooleanEntitlement"
+	SidecarService_GetNumericEntitlement_FullMethodName  = "/stigg.sidecar.v1.SidecarService/GetNumericEntitlement"
+	SidecarService_GetMeteredEntitlement_FullMethodName  = "/stigg.sidecar.v1.SidecarService/GetMeteredEntitlement"
+	SidecarService_GetEnumEntitlement_FullMethodName     = "/stigg.sidecar.v1.SidecarService/GetEnumEntitlement"
+	SidecarService_ReportUsage_FullMethodName            = "/stigg.sidecar.v1.SidecarService/ReportUsage"
+	SidecarService_ReportEvents_FullMethodName           = "/stigg.sidecar.v1.SidecarService/ReportEvents"
+	SidecarService_ReloadEntitlements_FullMethodName     = "/stigg.sidecar.v1.SidecarService/ReloadEntitlements"
+	SidecarService_ReportUsageBulk_FullMethodName        = "/stigg.sidecar.v1.SidecarService/ReportUsageBulk"
+	SidecarService_GetEntitlementV2_FullMethodName       = "/stigg.sidecar.v1.SidecarService/GetEntitlementV2"
+	SidecarService_GetEntitlementsStateV2_FullMethodName = "/stigg.sidecar.v1.SidecarService/GetEntitlementsStateV2"
 )
 
 // SidecarServiceClient is the client API for SidecarService service.
@@ -46,6 +48,8 @@ type SidecarServiceClient interface {
 	ReportEvents(ctx context.Context, in *ReportEventsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ReloadEntitlements(ctx context.Context, in *ReloadEntitlementsRequest, opts ...grpc.CallOption) (*ReloadEntitlementsResponse, error)
 	ReportUsageBulk(ctx context.Context, in *ReportUsageBulkRequest, opts ...grpc.CallOption) (*ReportUsageBulkResponse, error)
+	GetEntitlementV2(ctx context.Context, in *GetEntitlementV2Request, opts ...grpc.CallOption) (*GetEntitlementV2Response, error)
+	GetEntitlementsStateV2(ctx context.Context, in *GetEntitlementsStateV2Request, opts ...grpc.CallOption) (*GetEntitlementsStateV2Response, error)
 }
 
 type sidecarServiceClient struct {
@@ -156,6 +160,26 @@ func (c *sidecarServiceClient) ReportUsageBulk(ctx context.Context, in *ReportUs
 	return out, nil
 }
 
+func (c *sidecarServiceClient) GetEntitlementV2(ctx context.Context, in *GetEntitlementV2Request, opts ...grpc.CallOption) (*GetEntitlementV2Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetEntitlementV2Response)
+	err := c.cc.Invoke(ctx, SidecarService_GetEntitlementV2_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sidecarServiceClient) GetEntitlementsStateV2(ctx context.Context, in *GetEntitlementsStateV2Request, opts ...grpc.CallOption) (*GetEntitlementsStateV2Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetEntitlementsStateV2Response)
+	err := c.cc.Invoke(ctx, SidecarService_GetEntitlementsStateV2_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SidecarServiceServer is the server API for SidecarService service.
 // All implementations must embed UnimplementedSidecarServiceServer
 // for forward compatibility.
@@ -170,6 +194,8 @@ type SidecarServiceServer interface {
 	ReportEvents(context.Context, *ReportEventsRequest) (*emptypb.Empty, error)
 	ReloadEntitlements(context.Context, *ReloadEntitlementsRequest) (*ReloadEntitlementsResponse, error)
 	ReportUsageBulk(context.Context, *ReportUsageBulkRequest) (*ReportUsageBulkResponse, error)
+	GetEntitlementV2(context.Context, *GetEntitlementV2Request) (*GetEntitlementV2Response, error)
+	GetEntitlementsStateV2(context.Context, *GetEntitlementsStateV2Request) (*GetEntitlementsStateV2Response, error)
 	mustEmbedUnimplementedSidecarServiceServer()
 }
 
@@ -209,6 +235,12 @@ func (UnimplementedSidecarServiceServer) ReloadEntitlements(context.Context, *Re
 }
 func (UnimplementedSidecarServiceServer) ReportUsageBulk(context.Context, *ReportUsageBulkRequest) (*ReportUsageBulkResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReportUsageBulk not implemented")
+}
+func (UnimplementedSidecarServiceServer) GetEntitlementV2(context.Context, *GetEntitlementV2Request) (*GetEntitlementV2Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEntitlementV2 not implemented")
+}
+func (UnimplementedSidecarServiceServer) GetEntitlementsStateV2(context.Context, *GetEntitlementsStateV2Request) (*GetEntitlementsStateV2Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEntitlementsStateV2 not implemented")
 }
 func (UnimplementedSidecarServiceServer) mustEmbedUnimplementedSidecarServiceServer() {}
 func (UnimplementedSidecarServiceServer) testEmbeddedByValue()                        {}
@@ -411,6 +443,42 @@ func _SidecarService_ReportUsageBulk_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SidecarService_GetEntitlementV2_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEntitlementV2Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SidecarServiceServer).GetEntitlementV2(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SidecarService_GetEntitlementV2_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SidecarServiceServer).GetEntitlementV2(ctx, req.(*GetEntitlementV2Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SidecarService_GetEntitlementsStateV2_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEntitlementsStateV2Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SidecarServiceServer).GetEntitlementsStateV2(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SidecarService_GetEntitlementsStateV2_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SidecarServiceServer).GetEntitlementsStateV2(ctx, req.(*GetEntitlementsStateV2Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SidecarService_ServiceDesc is the grpc.ServiceDesc for SidecarService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -457,6 +525,14 @@ var SidecarService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ReportUsageBulk",
 			Handler:    _SidecarService_ReportUsageBulk_Handler,
+		},
+		{
+			MethodName: "GetEntitlementV2",
+			Handler:    _SidecarService_GetEntitlementV2_Handler,
+		},
+		{
+			MethodName: "GetEntitlementsStateV2",
+			Handler:    _SidecarService_GetEntitlementsStateV2_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
