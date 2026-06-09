@@ -1,4 +1,4 @@
-module github.com/stiggio/sidecar-sdk-go/v6
+module github.com/stiggio/sidecar-sdk-go/v7
 
 go 1.18
 

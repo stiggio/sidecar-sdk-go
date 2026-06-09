@@ -9,7 +9,7 @@ See https://docs.stigg.io/docs/sidecar-sdk
 ## Installation
 
 ```shell
-    go get github.com/stiggio/sidecar-sdk-go/v6
+    go get github.com/stiggio/sidecar-sdk-go/v7
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ Initialize the client:
 package xyz
 
 import (
-  "github.com/stiggio/sidecar-sdk-go/v6"
+  "github.com/stiggio/sidecar-sdk-go/v7"
 )
 
 host := "localhost"
@@ -42,8 +42,8 @@ package xyz
 import (
   "context"
   "fmt"
-  "github.com/stiggio/sidecar-sdk-go/v6"
-  sidecarv1 "github.com/stiggio/sidecar-sdk-go/v6/generated/stigg/sidecar/v1"
+  "github.com/stiggio/sidecar-sdk-go/v7"
+  sidecarv1 "github.com/stiggio/sidecar-sdk-go/v7/generated/stigg/sidecar/v1"
 )
 
 func main() {
@@ -76,8 +76,8 @@ package xyz
 import (
   "context"
   "fmt"
-  "github.com/stiggio/sidecar-sdk-go/v6"
-  sidecarv1 "github.com/stiggio/sidecar-sdk-go/v6/generated/stigg/sidecar/v1"
+  "github.com/stiggio/sidecar-sdk-go/v7"
+  sidecarv1 "github.com/stiggio/sidecar-sdk-go/v7/generated/stigg/sidecar/v1"
 )
 
 func main() {
